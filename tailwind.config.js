@@ -16,20 +16,20 @@ export default {
           red: '#FF9C9C',
         },
 
-        // Greyscale
+        // Greyscale Colors
         grey: {
-          1: '#F3F3F3',
-          2: '#D8D8D8',
-          3: '#B2B2B2',
-          4: '#9F9F9F',
-          5: '#7B7B7B',
-          6: '#707070',
-          7: '#6D6D6D',
-          8: '#696969',
-          9: '#595959',
-          10: '#4B4B4B',
-          11: '#363636',
           12: '#2F2F2F',
+          11: '#363636',
+          10: '#4B4B4B',
+          9: '#595959',
+          8: '#696969',
+          7: '#6D6D6D',
+          6: '#707070',
+          5: '#7B7B7B',
+          4: '#9F9F9F',
+          3: '#B2B2B2',
+          2: '#D8D8D8',
+          1: '#F3F3F3',
         },
 
         // Foundation Colors - Blue
@@ -72,15 +72,14 @@ export default {
           p3: '#EE82B1',
         },
 
-        // State Colors
-        state: {
-          error: '#FF7171',
-        },
+        // Error Color
+        error: '#FF7171',
 
-        // Category Exclusion
+        // Category Exclusion Colors
         exclusion: {
           yg1: '#D2D2D2',
           yg2: '#A6A6A6',
+          white: '#FFFFFF',
         },
 
         white: '#FFFFFF',
@@ -88,6 +87,32 @@ export default {
       },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
+      },
+      fontSize: {
+        // Display
+        'display-1': ['48px', { lineHeight: '56px', fontWeight: '700' }],
+        'display-2': ['40px', { lineHeight: '48px', fontWeight: '700' }],
+
+        // Heading
+        'heading-1': ['32px', { lineHeight: '40px', fontWeight: '700' }],
+        'heading-2': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'heading-3': ['24px', { lineHeight: '32px', fontWeight: '700' }],
+        'heading-4': ['20px', { lineHeight: '28px', fontWeight: '700' }],
+
+        // Title
+        'title-1': ['18px', { lineHeight: '26px', fontWeight: '600' }],
+        'title-2': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-3': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+
+        // Body
+        'body-1': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-2': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-3': ['12px', { lineHeight: '18px', fontWeight: '400' }],
+
+        // Label
+        'label-1': ['14px', { lineHeight: '20px', fontWeight: '500' }],
+        'label-2': ['12px', { lineHeight: '18px', fontWeight: '500' }],
+        'label-3': ['10px', { lineHeight: '16px', fontWeight: '500' }],
       },
       screens: {
         'xs': '375px',
