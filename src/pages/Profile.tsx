@@ -60,7 +60,7 @@ function FieldLabel({
   rightHint?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-end justify-between">
+    <div className="flex items-end gap-2">
       <div className="text-[22px] font-semibold leading-[33px] text-[#6D6D6D]">
         {required ? `*${children}` : children}
       </div>
@@ -309,6 +309,7 @@ export default function Profile() {
                 >
                   기술 스택
                 </FieldLabel>
+                
 
                 {form.stacks.map((v, i) => (
                   <TextField
