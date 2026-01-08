@@ -26,7 +26,8 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.LOGIN} className="text-grey-12 hover:text-brand-blue transition-colors">
+              {/* <Link to={ROUTES.LOGIN} className="text-grey-12 hover:text-brand-blue transition-colors"> */}
+                            <Link to={ROUTES.PROFILE} className="text-grey-12 hover:text-brand-blue transition-colors">
                 로그인
               </Link>
             </li>
