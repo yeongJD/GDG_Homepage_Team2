@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, slideUp } from "@/utils/animations";
+import xIcon from "@/components/img/profile.png";
+
 
 type ProfileForm = {
   name: string;
@@ -19,18 +21,10 @@ type Touched = {
 
 const MAX_STACKS = 3;
 
-function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
-      <path
-        d="M7 7L17 17M17 7L7 17"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+// function XIconImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
+//   return <img src={xIcon} alt="clear" {...props} />;
+// }
+
 
 function CameraIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -121,7 +115,8 @@ function TextField({
         ].join(" ")}
         aria-label="clear"
       >
-        <XIcon className="h-5 w-5" />
+  <img src={xIcon} alt="clear" className="h-5 w-5" />
+
       </button>
     </div>
   );
