@@ -1,4 +1,3 @@
-// src/pages/Profile.tsx
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, slideUp } from "@/utils/animations";
@@ -9,7 +8,13 @@ type ProfileForm = {
   major: string;
   bio: string;
   stacks: [string, string, string];
-  avatarUrl?: string; // 미리보기용
+  avatarUrl?: string;
+};
+
+type Touched = {
+  name: boolean;
+  major: boolean;
+  bio: boolean;
 };
 
 const MAX_STACKS = 3;
@@ -59,7 +64,9 @@ function FieldLabel({
       <div className="text-[22px] font-semibold leading-[33px] text-[#6D6D6D]">
         {required ? `*${children}` : children}
       </div>
-      {rightHint ? <div className="text-sm font-medium text-[#B2B2B2]">{rightHint}</div> : null}
+      {rightHint ? (
+        <div className="text-sm font-medium text-[#B2B2B2]">{rightHint}</div>
+      ) : null}
     </div>
   );
 }
@@ -68,21 +75,26 @@ function TextField({
   value,
   placeholder,
   disabled,
+  invalid,
   onChange,
   onClear,
+  onBlur,
 }: {
   value: string;
   placeholder: string;
   disabled?: boolean;
+  invalid?: boolean;
   onChange?: (v: string) => void;
   onClear?: () => void;
+  onBlur?: () => void;
 }) {
   const showClear = !disabled && value.length > 0 && !!onClear;
 
   return (
     <div
       className={[
-        "relative h-[79px] w-full rounded-[12px] border border-[#D8D8D8] bg-white",
+        "relative h-[79px] w-full rounded-[12px] bg-white",
+        invalid ? "border border-[#FF4D4F]" : "border border-[#D8D8D8]",
         disabled ? "opacity-70" : "",
       ].join(" ")}
     >
@@ -90,6 +102,7 @@ function TextField({
         value={value}
         disabled={disabled}
         onChange={(e) => onChange?.(e.target.value)}
+        onBlur={onBlur}
         placeholder={placeholder}
         className={[
           "h-full w-full rounded-[12px] bg-transparent px-6 pr-14 text-[22px] font-medium leading-[33px]",
@@ -98,7 +111,6 @@ function TextField({
         ].join(" ")}
       />
 
-      {/* 우측 X(클리어) */}
       <button
         type="button"
         onClick={onClear}
@@ -116,29 +128,46 @@ function TextField({
 }
 
 export default function Profile() {
-  // TODO: 실제로는 로그인한 유저 정보(구글 이메일 등)를 여기 초기값으로 주입하면 됨
   const [form, setForm] = useState<ProfileForm>({
     name: "",
-    email: "user@gmail.com", // 구글 계정 이메일로 고정(예시)
+    email: "user@gmail.com",
     major: "",
     bio: "",
     stacks: ["", "", ""],
     avatarUrl: undefined,
   });
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+ 
+  const [touched, setTouched] = useState<Touched>({
+    name: false,
+    major: false,
+    bio: false,
+  });
 
-  const canSave = useMemo(() => {
-    // 필수값(이름/이메일/학과/설명) 체크
-    const ok =
-      form.name.trim().length > 0 &&
-      form.email.trim().length > 0 &&
-      form.major.trim().length > 0 &&
-      form.bio.trim().length > 0;
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
-    // 기술스택 3개 제한은 이미 UI가 3칸이라 자동 보장
-    return ok;
-  }, [form]);
+  // 에러분별
+  const errors = useMemo(() => {
+    return {
+      name: form.name.trim().length === 0,
+      major: form.major.trim().length === 0,
+      bio: form.bio.trim().length === 0,
+      // email은 고정이라 보통 에러 체크 제외 (원하면 아래처럼 체크 가능)
+      // email: form.email.trim().length === 0,
+    };
+  }, [form.name, form.major, form.bio]);
+
+  const isValid = useMemo(() => {
+    return !errors.name && !errors.major && !errors.bio;
+  }, [errors]);
+
+  // 테두리로 오류표시
+  const showInvalid = (key: keyof typeof errors) => {
+    if (key === "name") return errors.name && (submitAttempted || touched.name);
+    if (key === "major") return errors.major && (submitAttempted || touched.major);
+    if (key === "bio") return errors.bio && (submitAttempted || touched.bio);
+    return false;
+  };
 
   const setField = <K extends keyof ProfileForm>(key: K, value: ProfileForm[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -152,23 +181,27 @@ export default function Profile() {
     });
   };
 
-  const onPickAvatar = () => {
-    fileInputRef.current?.click();
-  };
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const onPickAvatar = () => fileInputRef.current?.click();
 
   const onAvatarChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const url = URL.createObjectURL(file);
     setForm((prev) => ({ ...prev, avatarUrl: url }));
   };
 
+  // 오류뜨만 안넘어감
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setSubmitAttempted(true);
 
-    // TODO: 여기서 서버/파이어베이스 등에 저장 로직 연결
-    // 예: await saveProfile(form)
+    if (!isValid) {
+
+      return;
+    }
+
     console.log("SAVE PROFILE:", form);
     alert("저장 완료(예시)!");
   };
@@ -176,37 +209,28 @@ export default function Profile() {
   return (
     <div className="container mx-auto px-4 py-16">
       <motion.div initial="hidden" animate="visible" variants={fadeIn}>
-        {/* 상단: 타이틀 + 저장 버튼 */}
         <motion.div variants={slideUp} className="flex items-center gap-6">
-          <h1 className="text-[40px] font-semibold leading-[60px] text-[#2F2F2F]">프로필 설정</h1>
+          <h1 className="text-[40px] font-semibold leading-[60px] text-[#2F2F2F]">
+            프로필 설정
+          </h1>
 
+          {/* 버튼은 눌릴 수 있게 두되, submit에서 막는 방식(요구사항: 진행되지 않게) */}
           <button
             type="submit"
             form="profile-form"
-            disabled={!canSave}
-            className={[
-              "h-[53px] rounded-[12px] px-6 text-[22px] font-semibold leading-[33px]",
-              "bg-[#4774FF] text-white",
-              canSave ? "hover:brightness-95" : "opacity-50 cursor-not-allowed",
-            ].join(" ")}
+            className="h-[53px] rounded-[12px] bg-[#4774FF] px-6 text-[22px] font-semibold leading-[33px] text-white hover:brightness-95"
           >
             저장하기
           </button>
         </motion.div>
 
-        {/* 본문 */}
         <motion.div variants={slideUp} className="mt-12">
-          <form id="profile-form" onSubmit={onSubmit} className="relative">
-            {/* 아바타 영역 */}
+          <form id="profile-form" onSubmit={onSubmit}>
+            {/* 아바타 */}
             <div className="relative mb-10 w-[130px]">
               <div className="h-[130px] w-[130px] overflow-hidden rounded-[12px] bg-[#D8D8D8]">
                 {form.avatarUrl ? (
-                  <img
-                    src={form.avatarUrl}
-                    alt="avatar"
-                    className="h-full w-full object-cover"
-                    draggable={false}
-                  />
+                  <img src={form.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
                 ) : (
                   <div className="grid h-full w-full place-items-center text-[#6D6D6D]">
                     <span className="text-sm font-semibold opacity-70">Avatar</span>
@@ -214,7 +238,6 @@ export default function Profile() {
                 )}
               </div>
 
-              {/* 우측 하단 카메라 버튼 */}
               <button
                 type="button"
                 onClick={onPickAvatar}
@@ -233,7 +256,6 @@ export default function Profile() {
               />
             </div>
 
-            {/* 폼 필드들 */}
             <div className="flex w-full max-w-[1040px] flex-col gap-6">
               {/* 이름 */}
               <div className="flex flex-col gap-3">
@@ -241,19 +263,17 @@ export default function Profile() {
                 <TextField
                   value={form.name}
                   placeholder="이름을 입력해주세요"
+                  invalid={showInvalid("name")}
                   onChange={(v) => setField("name", v)}
                   onClear={() => setField("name", "")}
+                  onBlur={() => setTouched((t) => ({ ...t, name: true }))}
                 />
               </div>
 
-              {/* 이메일(고정) */}
+              {/* 이메일 (고정) */}
               <div className="flex flex-col gap-3">
                 <FieldLabel required>이메일</FieldLabel>
-                <TextField
-                  value={form.email}
-                  placeholder="*구글 계정 이메일로 고정"
-                  disabled
-                />
+                <TextField value={form.email} placeholder="*구글 계정 이메일로 고정" disabled />
               </div>
 
               {/* 학과/전공 */}
@@ -262,8 +282,10 @@ export default function Profile() {
                 <TextField
                   value={form.major}
                   placeholder="학과 또는 전공을 입력해주세요"
+                  invalid={showInvalid("major")}
                   onChange={(v) => setField("major", v)}
                   onClear={() => setField("major", "")}
+                  onBlur={() => setTouched((t) => ({ ...t, major: true }))}
                 />
               </div>
 
@@ -273,20 +295,17 @@ export default function Profile() {
                 <TextField
                   value={form.bio}
                   placeholder="설명을 추가해주세요 (ex. 안녕하세요! 1년동안 즐거운 시간 보내면 좋겠습니다.)"
+                  invalid={showInvalid("bio")}
                   onChange={(v) => setField("bio", v)}
                   onClear={() => setField("bio", "")}
+                  onBlur={() => setTouched((t) => ({ ...t, bio: true }))}
                 />
               </div>
 
-              {/* 기술 스택(최대 3개) */}
+              {/* 기술 스택 */}
               <div className="flex flex-col gap-3">
                 <FieldLabel
-                  required={false}
-                  rightHint={
-                    <span className="text-[16px] font-medium text-[#B2B2B2]">
-                      최대 {MAX_STACKS}개
-                    </span>
-                  }
+                  rightHint={<span className="text-[16px] font-medium text-[#B2B2B2]">최대 {MAX_STACKS}개</span>}
                 >
                   기술 스택
                 </FieldLabel>
@@ -301,6 +320,13 @@ export default function Profile() {
                   />
                 ))}
               </div>
+
+              {/* (선택) 하단에 간단한 안내문구 넣고 싶으면 */}
+              {!isValid && submitAttempted ? (
+                <p className="mt-2 text-sm font-medium text-[#FF4D4F]">
+                  필수 항목(*)을 모두 입력해주세요.
+                </p>
+              ) : null}
             </div>
           </form>
         </motion.div>
