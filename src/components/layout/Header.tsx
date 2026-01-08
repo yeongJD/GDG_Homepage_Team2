@@ -11,23 +11,23 @@ const Header = () => {
           </Link>
           <ul className="flex gap-6">
             <li>
-              <Link to={ROUTES.ABOUT} className="text-grey-12 hover:text-brand-blue transition-colors">
-                About
+              <Link to={ROUTES.INTRO} className="text-grey-12 hover:text-brand-blue transition-colors">
+                소개
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.PROJECTS} className="text-grey-12 hover:text-brand-blue transition-colors">
-                Projects
+              <Link to={ROUTES.ACTIVITY} className="text-grey-12 hover:text-brand-blue transition-colors">
+                활동
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.TEAM} className="text-grey-12 hover:text-brand-blue transition-colors">
-                Team
+              <Link to={ROUTES.MEMBER} className="text-grey-12 hover:text-brand-blue transition-colors">
+                멤버
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.CONTACT} className="text-grey-12 hover:text-brand-blue transition-colors">
-                Contact
+              <Link to={ROUTES.LOGIN} className="text-grey-12 hover:text-brand-blue transition-colors">
+                로그인
               </Link>
             </li>
           </ul>
