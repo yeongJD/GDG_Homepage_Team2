@@ -23,3 +23,19 @@
            hover:bg-grey-3 transition-colors duration-200;
   }
 }
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+:root{
+  --White-FFFFFF: #ffffff;
+  --G-12: #2F2F2F;
+  --G-7: #6D6D6D;
+  --G-3: #B2B2B2;
+  --G-2: #D8D8D8;
+  --Blue-B5: #4774FF;
+  --Error-Red: #FF4D4F;
+}
+
+html, body {
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+}
