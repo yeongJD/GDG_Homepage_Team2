@@ -4,7 +4,7 @@ import gdgLogo from '@/assets/gdg_logo.png';
 
 const Header = () => {
   return (
-    <header className="bg-white h-[100px]">
+    <header className="bg-transparent h-[100px]">
       <nav className="w-full h-full flex items-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <Link to={ROUTES.HOME} className="flex items-center">
           <img src={gdgLogo} alt="GDG Logo" className="h-6 sm:h-7 md:h-8" />
