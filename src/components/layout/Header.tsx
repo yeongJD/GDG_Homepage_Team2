@@ -73,9 +73,9 @@ const Header = () => {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="w-10 h-10 rounded-full overflow-hidden"
+              className="w-10 h-10 bg-transparent"
             >
-              <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
+              <img src={profileImg} alt="Profile" className="w-full h-full object-contain" />
             </button>
 
             {showDropdown && (
