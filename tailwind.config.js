@@ -89,30 +89,32 @@ export default {
         sans: ['Pretendard', 'sans-serif'],
       },
       fontSize: {
-        // Display
-        'display-1': ['48px', { lineHeight: '56px', fontWeight: '700' }],
-        'display-2': ['40px', { lineHeight: '48px', fontWeight: '700' }],
-
-        // Heading
-        'heading-1': ['32px', { lineHeight: '40px', fontWeight: '700' }],
-        'heading-2': ['28px', { lineHeight: '36px', fontWeight: '700' }],
-        'heading-3': ['24px', { lineHeight: '32px', fontWeight: '700' }],
-        'heading-4': ['20px', { lineHeight: '28px', fontWeight: '700' }],
-
         // Title
-        'title-1': ['18px', { lineHeight: '26px', fontWeight: '600' }],
-        'title-2': ['16px', { lineHeight: '24px', fontWeight: '600' }],
-        'title-3': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'title-bold': ['100px', { lineHeight: '120px', fontWeight: '700' }],
+        'title-semibold-1': ['60px', { lineHeight: '72px', fontWeight: '600' }],
+        'title-medium': ['40px', { lineHeight: '48px', fontWeight: '500' }],
+        'title-semibold-2': ['40px', { lineHeight: '56px', fontWeight: '600' }],
+
+        // title (lowercase)
+        'title-semibold': ['60px', { lineHeight: '72px', fontWeight: '600' }],
 
         // Body
-        'body-1': ['16px', { lineHeight: '24px', fontWeight: '400' }],
-        'body-2': ['14px', { lineHeight: '20px', fontWeight: '400' }],
-        'body-3': ['12px', { lineHeight: '18px', fontWeight: '400' }],
+        'body-semibold-1': ['30px', { lineHeight: '42px', fontWeight: '600' }],
+        'body-medium-1': ['26px', { lineHeight: '36px', fontWeight: '500' }],
+        'body-medium-2': ['22px', { lineHeight: '30px', fontWeight: '500' }],
+        'body-semibold-2': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'body-semibold-3': ['20px', { lineHeight: '28px', fontWeight: '600' }],
 
-        // Label
-        'label-1': ['14px', { lineHeight: '20px', fontWeight: '500' }],
-        'label-2': ['12px', { lineHeight: '18px', fontWeight: '500' }],
-        'label-3': ['10px', { lineHeight: '16px', fontWeight: '500' }],
+        // body (lowercase)
+        'body-semibold': ['20px', { lineHeight: '28px', fontWeight: '600' }],
+        'body-medium': ['20px', { lineHeight: '28px', fontWeight: '500' }],
+        'body-bold': ['20px', { lineHeight: '28px', fontWeight: '700' }],
+
+        // caption
+        'caption-medium': ['16px', { lineHeight: '22px', fontWeight: '500' }],
+
+        // capion (typo in original)
+        'capion-medium': ['14px', { lineHeight: '20px', fontWeight: '500' }],
       },
       screens: {
         'xs': '375px',
