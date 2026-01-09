@@ -1,11 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/hooks/useAuth';
+import { googleAuthUtils } from '@/utils/googleAuth.utils';
 import gdgLogo from '@/assets/gdg_logo.png';
 import profileImg from '@/components/img/profile.png';
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -24,13 +26,13 @@ const Header = () => {
   }, []);
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
-    setShowDropdown(true);
+    googleAuthUtils.redirectToGoogle();
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     setShowDropdown(false);
+    navigate(ROUTES.HOME);
   };
 
   const handleProfileEdit = () => {
@@ -64,7 +66,7 @@ const Header = () => {
           </ul>
         </div>
 
-        {!isLoggedIn ? (
+        {!isAuthenticated ? (
           <button
             onClick={handleLogin}
             className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors"
@@ -77,11 +79,15 @@ const Header = () => {
               onClick={() => setShowDropdown(!showDropdown)}
               className="w-10 h-10 bg-transparent"
             >
-              <img src={profileImg} alt="Profile" className="w-full h-full object-contain" />
+              <img
+                src={user?.imageUrl || profileImg}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
+              />
             </button>
 
             {showDropdown && (
-              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[140px]">
+              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[140px] z-50">
                 <button
                   onClick={handleProfileEdit}
                   className="w-full text-left px-4 py-2 text-body-medium text-grey-4 hover:bg-grey-1 transition-colors"
