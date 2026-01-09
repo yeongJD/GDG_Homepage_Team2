@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, slideUp } from "@/utils/animations";
-import Avatar from "@/assets/profile.png";
+import Avatar from "@/assets/profile.svg";
 
 type ProfileForm = {
   name: string;
@@ -234,7 +234,7 @@ return (
           <form id="profile-form" onSubmit={onSubmit}>
             {/* 아바타 */}
             <div className="relative mb-10 w-[130px]">
-<div className="h-[130px] w-[130px] overflow-hidden rounded-[12px] bg-[#D8D8D8]">
+<div className="h-[130px] w-[130px] overflow-hidden rounded-[12px]">
   <img
     src={form.avatarUrl ?? Avatar}
     alt="avatar"
