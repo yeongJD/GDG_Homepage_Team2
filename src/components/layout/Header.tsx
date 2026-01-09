@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import gdgLogo from '@/assets/gdg_logo.png';
 import profileImg from '@/components/img/profile.png';
@@ -9,6 +9,8 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === ROUTES.HOME;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,7 +39,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white border-b border-grey-2 h-[100px]">
+    <header className={`h-[100px] ${isHomePage ? 'bg-transparent' : 'bg-white border-b border-grey-2'}`}>
       <nav className="w-full h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <Link to={ROUTES.HOME} className="flex items-center">
           <img src={gdgLogo} alt="GDG Logo" className="h-6 sm:h-7 md:h-8" />
