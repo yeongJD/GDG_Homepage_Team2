@@ -1,8 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import homeBackground from "@/assets/home_background.png";
+import { motion } from "framer-motion";
 
 const HEADER_H = 100;
+
+// 요소 단위 순차 등장 (stagger)
+const container = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.9,
+    },
+  },
+};
+
+
+
+const firstItem = {
+  hidden: { opacity: 0, y: 14, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.55, ease: "easeOut", delay: 0.25  },
+  },
+};
+
+// ✅ 2~마지막 요소는 "같은 딜레이"로 동시에 등장
+const item = {
+  hidden: { opacity: 0, y: 14, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.55, ease: "easeOut", delay: 0.9 }, // 여기만 조절
+  },
+};
+
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,39 +52,50 @@ const Home = () => {
         style={{ backgroundImage: `url(${homeBackground})` }}
       />
 
-      {/* ✅ 헤더 아래 영역 전체를 중앙 정렬 */}
+      {/* 헤더 아래 영역 전체 중앙 */}
       <section
         className="flex w-full items-center justify-center"
         style={{ height: `calc(100vh - ${HEADER_H}px)` }}
       >
-        {/* ✅ 가운데 정렬될 “콘텐츠 묶음” */}
-        <div className="flex flex-col items-center text-center">
-          {/* Learn together... */}
-          <p className="text-[40px] font-medium leading-[90px] text-[#8B8A82]">
+        {/*  애니메이션 */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col items-center text-center"
+        >
+          <motion.p
+            variants={firstItem}
+            className="text-[40px] font-medium leading-[48px] text-[#8B8A82]"
+          >
             Learn together. Build better.
-          </p>
+          </motion.p>
 
-          {/* Title */}
-          <h1 className="mt-8 text-[100px] font-bold leading-[90px] text-[#2F2F2F]">
+          <motion.h1
+            variants={item}
+            className="mt-[48px] text-[100px] font-bold leading-[90px] text-[#2F2F2F]"
+          >
             GDG Seoultech
-          </h1>
+          </motion.h1>
 
-          {/* Subtitle */}
-          <p className="mt-6 text-[26px] font-medium leading-[90px] text-[#565653]">
+          <motion.p
+            variants={item}
+            className="mt-[24px] text-[26px] font-medium leading-[36px] text-[#565653]"
+          >
             Google Developer Group at Seoul National University of Science & Technology
-          </p>
+          </motion.p>
 
-          {/* Button */}
-          <button
+          <motion.button
+            variants={item}
             onClick={() => navigate(ROUTES.INTRO)}
-            className="mt-10 inline-flex items-center gap-2 rounded-full bg-white px-6 py-5
+            className="mt-[48px] inline-flex items-center gap-2 rounded-full bg-white px-6 py-5
                        text-[22px] font-semibold leading-[33px] text-[#595959]
                        outline outline-1 outline-grey-9 outline-offset-[-1px]
                        hover:bg-grey-1 transition-colors"
           >
             5기 활동 보러가기 <span aria-hidden="true">→</span>
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </section>
     </div>
   );
