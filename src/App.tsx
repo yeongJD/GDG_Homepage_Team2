@@ -6,9 +6,7 @@ import Intro from '@/pages/Intro';
 import Activity from '@/pages/Activity';
 import Member from '@/pages/Member';
 import Login from '@/pages/Login';
-import Profile from '@/pages/Profile';
 import { ROUTES } from '@/constants/routes';
-// import Profile from './pages/Profile';
 
 function App() {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
@@ -23,7 +21,6 @@ function App() {
             <Route path={ROUTES.ACTIVITY} element={<Activity />} />
             <Route path={ROUTES.MEMBER} element={<Member />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
-            <Route path={ROUTES.PROFILE} element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>
