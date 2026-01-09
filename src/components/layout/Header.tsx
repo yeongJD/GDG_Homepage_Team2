@@ -1,8 +1,41 @@
-import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import gdgLogo from '@/assets/gdg_logo.png';
+import profileImg from '@/components/img/profile.png';
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setShowDropdown(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setShowDropdown(false);
+  };
+
+  const handleProfileEdit = () => {
+    navigate(ROUTES.PROFILE);
+    setShowDropdown(false);
+  };
+
   return (
     <header className="bg-transparent h-[100px]">
       <nav className="w-full h-full flex items-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
@@ -28,9 +61,41 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <Link to={ROUTES.LOGIN} className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors">
-          로그인
-        </Link>
+
+        {!isLoggedIn ? (
+          <button
+            onClick={handleLogin}
+            className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors"
+          >
+            로그인
+          </button>
+        ) : (
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="w-10 h-10 rounded-full overflow-hidden"
+            >
+              <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
+            </button>
+
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[140px]">
+                <button
+                  onClick={handleProfileEdit}
+                  className="w-full text-left px-4 py-2 text-body-medium text-grey-4 hover:bg-grey-1 transition-colors"
+                >
+                  프로필 수정
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-body-medium text-red-r3 hover:bg-grey-1 transition-colors"
+                >
+                  로그아웃
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
     </header>
   );
