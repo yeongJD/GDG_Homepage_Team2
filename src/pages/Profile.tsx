@@ -1,8 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, slideUp } from "@/utils/animations";
-import xIcon from "@/components/img/profile.png";
-
+import Avatar from "@/assets/profile.png";
 
 type ProfileForm = {
   name: string;
@@ -21,10 +20,18 @@ type Touched = {
 
 const MAX_STACKS = 3;
 
-// function XIconImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
-//   return <img src={xIcon} alt="clear" {...props} />;
-// }
-
+function XIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M7 7L17 17M17 7L7 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 function CameraIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -43,7 +50,6 @@ function CameraIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 function FieldLabel({
   children,
   required,
@@ -54,16 +60,15 @@ function FieldLabel({
   rightHint?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex items-baseline gap-3"> {/* gap-0이면 완전 붙음 */}
       <div className="text-[22px] font-semibold leading-[33px] text-[#6D6D6D]">
         {required ? `*${children}` : children}
       </div>
-      {rightHint ? (
-        <div className="text-sm font-medium text-[#B2B2B2]">{rightHint}</div>
-      ) : null}
+      {rightHint ? <div className="text-[16px] font-medium text-[#B2B2B2]">{rightHint}</div> : null}
     </div>
   );
 }
+
 
 function TextField({
   value,
@@ -115,8 +120,7 @@ function TextField({
         ].join(" ")}
         aria-label="clear"
       >
-  <img src={xIcon} alt="clear" className="h-5 w-5" />
-
+        <XIcon className="h-5 w-5" />
       </button>
     </div>
   );
@@ -132,7 +136,7 @@ export default function Profile() {
     avatarUrl: undefined,
   });
 
- 
+  // ✅ 유효성 표시를 위한 상태들
   const [touched, setTouched] = useState<Touched>({
     name: false,
     major: false,
@@ -141,7 +145,7 @@ export default function Profile() {
 
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // 에러분별
+  // ✅ 에러 상태 계산 (필수만)
   const errors = useMemo(() => {
     return {
       name: form.name.trim().length === 0,
@@ -156,7 +160,7 @@ export default function Profile() {
     return !errors.name && !errors.major && !errors.bio;
   }, [errors]);
 
-  // 테두리로 오류표시
+  // ✅ 빨간 테두리 노출 조건: (submit 한번 눌렀거나) (해당 필드가 touched)
   const showInvalid = (key: keyof typeof errors) => {
     if (key === "name") return errors.name && (submitAttempted || touched.name);
     if (key === "major") return errors.major && (submitAttempted || touched.major);
@@ -187,13 +191,13 @@ export default function Profile() {
     setForm((prev) => ({ ...prev, avatarUrl: url }));
   };
 
-  // 오류뜨만 안넘어감
+  // ✅ 저장(Submit) 시 검증 실패면 진행 막기
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     setSubmitAttempted(true);
 
     if (!isValid) {
-
+      // 필요하면 첫 에러로 스크롤/포커스도 가능
       return;
     }
 
@@ -201,8 +205,15 @@ export default function Profile() {
     alert("저장 완료(예시)!");
   };
 
-  return (
-    <div className="container mx-auto px-4 py-16">
+
+return (
+  <div className="w-full">
+    {/* ✅ 이 div가 “가운데 정렬 래퍼” */}
+    <div className="mx-auto w-full max-w-[1040px] px-4 py-16">
+
+
+
+
       <motion.div initial="hidden" animate="visible" variants={fadeIn}>
         <motion.div variants={slideUp} className="flex items-center gap-6">
           <h1 className="text-[40px] font-semibold leading-[60px] text-[#2F2F2F]">
@@ -223,15 +234,14 @@ export default function Profile() {
           <form id="profile-form" onSubmit={onSubmit}>
             {/* 아바타 */}
             <div className="relative mb-10 w-[130px]">
-              <div className="h-[130px] w-[130px] overflow-hidden rounded-[12px] bg-[#D8D8D8]">
-                {form.avatarUrl ? (
-                  <img src={form.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
-                ) : (
-                  <div className="grid h-full w-full place-items-center text-[#6D6D6D]">
-                    <span className="text-sm font-semibold opacity-70">Avatar</span>
-                  </div>
-                )}
-              </div>
+<div className="h-[130px] w-[130px] overflow-hidden rounded-[12px] bg-[#D8D8D8]">
+  <img
+    src={form.avatarUrl ?? Avatar}
+    alt="avatar"
+    className="h-full w-full object-cover"
+  />
+</div>
+
 
               <button
                 type="button"
@@ -297,14 +307,20 @@ export default function Profile() {
                 />
               </div>
 
-              {/* 기술 스택 */}
-              <div className="flex flex-col gap-3">
-                <FieldLabel
-                  rightHint={<span className="text-[16px] font-medium text-[#B2B2B2]">최대 {MAX_STACKS}개</span>}
-                >
-                  기술 스택
-                </FieldLabel>
+        
+                {/* 기술 스택 */}
                 
+                
+                <div className="flex flex-col gap-3">
+                  <FieldLabel
+                    rightHint={
+                      <span className="relative -top-[2px] text-[16px] font-medium text-[#B2B2B2]">
+                        최대 {MAX_STACKS}개
+                      </span>
+                    }
+                  >
+                    기술 스택
+                  </FieldLabel>
 
                 {form.stacks.map((v, i) => (
                   <TextField
@@ -328,5 +344,7 @@ export default function Profile() {
         </motion.div>
       </motion.div>
     </div>
-  );
+  </div>
+);
+
 }
