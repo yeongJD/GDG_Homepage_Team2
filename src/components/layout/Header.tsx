@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import gdgLogo from '@/assets/gdg_logo.png';
-import profileImg from '@/components/img/profile.png';
+import profileImg from '@/assets/profile.svg';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
