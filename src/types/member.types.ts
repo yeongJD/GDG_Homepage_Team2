@@ -21,6 +21,7 @@ export interface Member {
   blogs?: MemberBlog;
   imageUrl?: string; // API에서 받아온 이미지 URL
   major?: string;    // 전공
+  stacks?: string[]; // 소셜 링크 (5기)
 }
 
 export interface ApiMember {

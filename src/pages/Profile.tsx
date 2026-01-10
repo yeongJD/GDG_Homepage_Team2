@@ -362,8 +362,8 @@ export default function Profile() {
 
   return (
     <div className="w-full">
-      {/* ✅ 이 div가 “가운데 정렬 래퍼” */}
-      <div className="mx-auto w-full max-w-[1040px] px-4 py-16">
+      {/* ✅ 이 div가 "가운데 정렬 래퍼" */}
+      <div className="mx-auto w-full max-w-[1440px] px-[200px] pt-[260px] pb-64">
         <motion.div initial="hidden" animate="visible" variants={fadeIn}>
           <motion.div variants={slideUp} className="flex items-center gap-6">
             <h1 className="text-[40px] font-semibold leading-[60px] text-[#2F2F2F]">
@@ -390,6 +390,9 @@ export default function Profile() {
                     src={form.avatarUrl ?? Avatar}
                     alt="avatar"
                     className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = Avatar;
+                    }}
                   />
                 </div>
 
@@ -483,7 +486,7 @@ export default function Profile() {
                   />
                 </div>
 
-                {/* 기술 스택 */}
+                {/* 소셜 링크 */}
                 <div className="flex flex-col gap-3">
                   <FieldLabel
                     rightHint={
@@ -492,14 +495,14 @@ export default function Profile() {
                       </span>
                     }
                   >
-                    기술 스택
+                    소셜 링크
                   </FieldLabel>
 
                   {form.stacks.map((v, i) => (
                     <TextField
                       key={i}
                       value={v}
-                      placeholder="기술 스택을 입력해주세요 (ex. React, Spring Boot)"
+                      placeholder="링크를 입력해주세요 (지원 링크: GitHub, Instagram, Velog)"
                       onChange={(next) => setStackAt(i, next)}
                       onClear={() => setStackAt(i, "")}
                     />

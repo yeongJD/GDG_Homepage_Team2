@@ -91,6 +91,7 @@ const Member = () => {
             introduce: m.bio,
             imageUrl: m.imageUrl,
             blogs: {},
+            stacks: m.stacks || [],
           }));
           setApiMembers(mappedMembers);
         } catch (error) {
@@ -120,10 +121,10 @@ const Member = () => {
   const members = useMemo(() => getMembersByRole(currentMembers, 'member'), [currentMembers]);
 
   return (
-    <main className="container max-w-[1041px] mx-auto px-4 relative min-h-screen">
+    <main className="container max-w-[1440px] mx-auto px-[200px] relative min-h-screen">
 
       {/* Page Title */}
-      <div className="absolute top-[260px] left-4 flex items-center gap-4">
+      <div className="absolute top-[260px] left-[200px] flex items-center gap-4">
         <h1 className="text-[40px] font-semibold leading-[150%]">Members</h1>
 
         {/* 기수 선택 토글 버튼 */}
@@ -134,7 +135,7 @@ const Member = () => {
       </div>
 
       {/* 본문 컨텐츠 영역 */}
-      <div className="pt-[480px] pb-20 flex flex-col gap-[160px]">
+      <div className="pt-[480px] pb-64 flex flex-col gap-[160px]">
         {loading && genNumber === 5 ? (
           <div className="text-center text-xl text-gray-500">Loading members...</div>
         ) : (
