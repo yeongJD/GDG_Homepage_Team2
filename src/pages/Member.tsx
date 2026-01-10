@@ -134,7 +134,7 @@ const Member = () => {
       </div>
 
       {/* 본문 컨텐츠 영역 */}
-      <div className="pt-[480px] pb-20 flex flex-col gap-[160px]">
+      <div className="pt-[480px] pb-64 flex flex-col gap-[160px]">
         {loading && genNumber === 5 ? (
           <div className="text-center text-xl text-gray-500">Loading members...</div>
         ) : (
