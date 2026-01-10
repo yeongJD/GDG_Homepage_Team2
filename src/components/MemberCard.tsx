@@ -3,6 +3,8 @@ import { Member } from '@/types/member.types';
 import defaultProfile from '@/assets/default_profile.png';
 import iconGithub from '@/assets/icon_github.svg';
 import iconNotion from '@/assets/icon_notion.svg';
+import iconInstagram from '@/assets/instagram_icon.svg';
+import iconVelog from '@/assets/velog_icon.svg';
 
 interface MemberCardProps {
     member: Member;
@@ -27,6 +29,29 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
 
     // 5기 여부 확인
     const isMockup = generation === 5;
+
+    // 소셜 링크 파싱 (5기 전용)
+    const parseSocialLinks = (stacks?: string[]) => {
+        if (!stacks || stacks.length === 0) return [];
+
+        const links: { type: 'github' | 'velog' | 'instagram'; url: string; icon: string }[] = [];
+
+        stacks.forEach(url => {
+            if (url.includes('github.com')) {
+                links.push({ type: 'github', url, icon: iconGithub });
+            } else if (url.includes('velog.io')) {
+                links.push({ type: 'velog', url, icon: iconVelog });
+            } else if (url.includes('instagram.com')) {
+                links.push({ type: 'instagram', url, icon: iconInstagram });
+            }
+        });
+
+        // 순서: GitHub → Velog → Instagram
+        const order = ['github', 'velog', 'instagram'];
+        return links.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+    };
+
+    const socialLinks = isMockup ? parseSocialLinks(member.stacks) : [];
 
     return(
         <div
@@ -65,6 +90,28 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* 소셜 링크 아이콘 (5기 전용, 왼쪽 24px, 상단 265px) */}
+                        {socialLinks.length > 0 && (
+                            <div className="absolute left-6 top-[265px] flex gap-3">
+                                {socialLinks.map((link, idx) => (
+                                    <a
+                                        key={idx}
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="w-[31px] h-[31px]"
+                                    >
+                                        <img
+                                            src={link.icon}
+                                            alt={link.type}
+                                            className="w-full h-full cursor-pointer opacity-70 hover:opacity-100"
+                                        />
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </>
                 ) : (
                     // 1-4기 레이아웃

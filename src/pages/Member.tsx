@@ -91,6 +91,7 @@ const Member = () => {
             introduce: m.bio,
             imageUrl: m.imageUrl,
             blogs: {},
+            stacks: m.stacks || [],
           }));
           setApiMembers(mappedMembers);
         } catch (error) {
