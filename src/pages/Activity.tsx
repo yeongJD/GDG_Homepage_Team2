@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/animations';
 import { useState } from 'react';
+import SessionCard from '@/components/SessionCard';
 
 // -------------------------------------------------------
 // [1] 기수 토글 버튼 (분리된 파일로 만들었을 때 파일을 못찾는 이슈가 있어서 한 파일에 작성)
@@ -65,7 +66,7 @@ const Activity = () => {
     {
       id: 1,
       title: "정규 세션 중심의\n학습과 교류",
-      desc: "매주 정규 세션에서 각 파트의 지식을 공유하며 성장합니다.\n파트 간 교류를 통해 한 분야에 국한되지 않고, 다양한 기술과\n관점을 함께 배울 수 있습니다.",
+      desc: "매주 정규 세션에서 각 파트의 지식을 공유하며 성장합니다.\n파트 간 교류를 통해 한 분야에 국한되지 않고, 다양한 기술과 관점을 함께 배울 수 있습니다.",
       image: "src/assets/images/activity_session.png",
       layout: "image-left", 
     },
@@ -86,11 +87,19 @@ const Activity = () => {
     {
       id: 4,
       title: "GDG출신 선배들의\n실무 특강",
-      desc: "GDG 활동 이후 현업에서 활약 중인 선배들의 특강과 세미나를\n통해, 실무 현장의 이야기와 취업 준비에 도움이 되는 인사이트를 얻을 수 있습니다.",
+      desc: "GDG 활동 이후 현업에서 활약 중인 선배들의 특강과 세미나를 통해, 실무 현장의 이야기와 취업 준비에 도움이 되는 인사이트를 얻을 수 있습니다.",
       image: "src/assets/images/activity_lecture.png",
       layout: "image-right",
     },
   ];
+
+  // 5th Session 카드에 들어갈 데이터 (나중에 DB에서 가져오겠지만 지금은 하드코딩)
+  const sessionList = [
+    { id: 1, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 2, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 3, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 4, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    ];
 
   return (
     <section className="w-full flex flex-col items-center py-[100px] bg-white">
@@ -109,17 +118,17 @@ const Activity = () => {
           transition={{ duration: 0.6 }}
           variants={slideUp}
         >
-          <h2 className="text-[50px] font-bold leading-[1.2] mb-6 text-black text-left">
+          <h2 className="text-[60px] font-bold leading-[1.2] mb-6 text-black text-left">
             What<br />We Do
           </h2>
-          <p className="text-[18px] text-gray-600 leading-relaxed max-w-[600px] text-left">
+          <p className="text-[22px] text-gray-600 leading-[1.5] max-w-[1041px] text-left">
             GDG SeoulTech는 매주 정규 세션을 통해 각자의 지식과 경험을 나눕니다.<br />
             또한 다른 GDG 소속 학교들과의 연합 행사, 해커톤을 통해 더 넓은 개발자 커뮤니티로 연결됩니다.
           </p>
         </motion.div>
 
         {/* 활동 카드 리스트 */}
-        <div className="flex flex-col gap-[40px]">
+        <div className="flex flex-col gap-[40px] max-w-[1041px]">
           {activities.map((activity, index) => (
             <motion.div
               key={activity.id}
@@ -138,8 +147,8 @@ const Activity = () => {
               `}
             >
               
-              {/* 1. 이미지 영역 (45%) */}
-              <div className="w-[45%] h-full relative overflow-hidden">
+              {/* 1. 이미지 영역 (41.3%) */}
+              <div className="w-[41.3%] h-full relative overflow-hidden">
                 <img 
                   src={activity.image} 
                   alt={activity.title} 
@@ -147,12 +156,12 @@ const Activity = () => {
                 />
               </div>
 
-              {/* 2. 텍스트 영역 (55%) */}
+              {/* 2. 텍스트 영역 (나머지) */}
               <div className="flex-1 p-10 flex flex-col justify-center">
-                <h3 className="text-[24px] font-bold mb-4 whitespace-pre-line text-left">
+                <h3 className="text-[30px] font-semibold mb-4 whitespace-pre-line text-left leading-[1.3]">
                   {activity.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-[16px] whitespace-pre-line text-left">
+                <p className="text-grey-8 leading-[1.5] text-[22px] whitespace-pre-line text-left">
                   {activity.desc}
                 </p>
               </div>
@@ -175,12 +184,12 @@ const Activity = () => {
           variants={slideUp}
         >
 
-          <h2 className="text-[40px] font-bold mb-4 text-left">
+          <h2 className="text-[60px] font-semibold leading-[1.2] mb-4 text-left">
             {getSessionTitle(selectedGen)}<br/>
             Session
           </h2>
           
-          <p className="text-gray-500 mb-[28px] text-left">
+          <p className="text-[22px] font-medium leading-[1.5] tracking-[0] text-[#6D6D6D] mb-[28px] text-left">
             {selectedGen}의 주요 활동들을 확인해보세요
           </p>
 
@@ -193,12 +202,30 @@ const Activity = () => {
           </div>
         </motion.div>
         
-        {/* 그리드 카드 영역 */}
-        <div className="w-full h-[400px] bg-gray-100 rounded-[20px] flex items-center justify-center text-gray-400">
-          5th Session Content Coming Soon...
-        </div>
       </div>
-
+      {/* 가로 스크롤 컨테이너 */}
+      <div 
+        className="
+          w-full 
+          overflow-x-auto 
+          flex gap-6 
+          snap-x snap-mandatory 
+          pb-8 
+          mb-[368px]
+          pl-6 xl:pl-[calc((100vw-1000px)/2+24px)]
+        "
+      >
+        {sessionList.map((session) => (    
+          <div key={session.id} className="snap-center">
+            <SessionCard 
+              key={session.id}
+              title={session.title}
+              desc={session.desc}
+              image={session.image}
+            />
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
