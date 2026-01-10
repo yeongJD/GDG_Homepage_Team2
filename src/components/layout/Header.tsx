@@ -16,18 +16,28 @@ const Header = () => {
   const isHomePage = location.pathname === ROUTES.HOME;
   const isIntroOrActivityPage = location.pathname === ROUTES.INTRO;
 
-  // '활동' 이동 로직
+  // '소개', '활동' 이동 로직
   const handleNavigation = (sectionId: string) => {
     // 1. 현재 Intro 페이지에 있다면? -> 바로 해당 위치로 부드럽게 스크롤
     if (location.pathname === ROUTES.INTRO) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+      // intro-section이면 페이지 최상단으로
+      if (sectionId === 'intro-section') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    } 
+    }
     // 2. 다른 페이지라면? -> Intro 페이지로 이동하면서 #해시값 전달 (Intro 페이지에서 useEffect가 받아서 처리함)
     else {
-      navigate(`${ROUTES.INTRO}#${sectionId}`);
+      // intro-section이면 해시 없이 Intro 페이지로 이동 (자동으로 최상단)
+      if (sectionId === 'intro-section') {
+        navigate(ROUTES.INTRO);
+      } else {
+        navigate(`${ROUTES.INTRO}#${sectionId}`);
+      }
     }
   };
 
@@ -45,6 +55,9 @@ const Header = () => {
   // 스크롤 감지
   useEffect(() => {
     if (!isIntroOrActivityPage) return;
+
+    // 초기 스크롤 위치 확인
+    setIsScrolled(window.scrollY > 0);
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
