@@ -1,6 +1,51 @@
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/animations';
-import BatchToggle from '@/components/BatchToggle';
+import { useState } from 'react';
+
+// -------------------------------------------------------
+// [1] 기수 토글 버튼 (분리된 파일로 만들었을 때 파일을 못찾는 이슈가 있어서 한 파일에 작성)
+// -------------------------------------------------------
+function BatchToggle({ selectedGen, onSelect }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const batches = ['5기', '4기', '3기', '2기', '1기'];
+
+  return (
+    <div className="relative">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 text-xl font-bold"
+      >
+        <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-[50px] text-lg">
+          {selectedGen} {isOpen ? '▲' : '▼'}
+        </span>
+      </button>
+
+      {isOpen && (
+        <ul className="absolute top-[50px] left-0 bg-white
+          w-[276px] h-auto py-6 rounded-[16px] 
+          border border-[#D8D8D8] 
+          shadow-[0px_1px_12px_0px_rgba(0,0,0,0.1)]
+          flex flex-col justify-center items-start pl-8 gap-4
+          z-50"
+        >
+          {batches.map((batch) => (
+            <li 
+              key={batch}
+              onClick={() => {
+                onSelect(batch);
+                setIsOpen(false);
+              }}
+              className="cursor-pointer text-xl font-medium transition-colors
+                text-gray-400 hover:text-black"
+            >
+              {batch}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 const Activity = () => {
 
@@ -129,22 +174,23 @@ const Activity = () => {
           transition={{ duration: 0.6 }}
           variants={slideUp}
         >
-          {/* 기수 선택 토글 버튼 */}
-          <div className="mb-4">
-             <BatchToggle 
-                selectedGen={selectedGen} 
-                onSelect={setSelectedGen} 
-             />
-          </div>
 
           <h2 className="text-[40px] font-bold mb-4 text-left">
             {getSessionTitle(selectedGen)}<br/>
             Session
           </h2>
           
-          <p className="text-gray-500 mb-10 text-left">
+          <p className="text-gray-500 mb-[28px] text-left">
             {selectedGen}의 주요 활동들을 확인해보세요
           </p>
+
+          {/* 기수 선택 토글 버튼 */}
+          <div className="mb-[80px]">
+             <BatchToggle 
+                selectedGen={selectedGen} 
+                onSelect={setSelectedGen} 
+             />
+          </div>
         </motion.div>
         
         {/* 그리드 카드 영역 */}
