@@ -120,10 +120,10 @@ const Member = () => {
   const members = useMemo(() => getMembersByRole(currentMembers, 'member'), [currentMembers]);
 
   return (
-    <main className="container max-w-[1041px] mx-auto px-4 relative min-h-screen">
+    <main className="container max-w-[1440px] mx-auto px-[200px] relative min-h-screen">
 
       {/* Page Title */}
-      <div className="absolute top-[260px] left-4 flex items-center gap-4">
+      <div className="absolute top-[260px] left-[200px] flex items-center gap-4">
         <h1 className="text-[40px] font-semibold leading-[150%]">Members</h1>
 
         {/* 기수 선택 토글 버튼 */}
