@@ -14,6 +14,21 @@ const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === ROUTES.HOME;
 
+  // '활동' 이동 로직
+  const handleNavigation = (sectionId: string) => {
+    // 1. 현재 Intro 페이지에 있다면? -> 바로 해당 위치로 부드럽게 스크롤
+    if (location.pathname === ROUTES.INTRO) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } 
+    // 2. 다른 페이지라면? -> Intro 페이지로 이동하면서 #해시값 전달 (Intro 페이지에서 useEffect가 받아서 처리함)
+    else {
+      navigate(`${ROUTES.INTRO}#${sectionId}`);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -49,14 +64,20 @@ const Header = () => {
         <div className="flex-1 flex justify-center">
           <ul className="flex gap-[95px]">
             <li>
-              <Link to={ROUTES.INTRO} className={`text-body-bold transition-colors ${location.pathname === ROUTES.INTRO ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
+              <button 
+                onClick={() => handleNavigation('intro-section')}
+                className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors"
+              >
                 소개
-              </Link>
+              </button>
             </li>
             <li>
-              <Link to={ROUTES.ACTIVITY} className={`text-body-bold transition-colors ${location.pathname === ROUTES.ACTIVITY ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
+              <button 
+                onClick={() => handleNavigation('target-5th-session')}
+                className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors"
+              >
                 활동
-              </Link>
+              </button>
             </li>
             <li>
               <Link to={ROUTES.MEMBER} className={`text-body-bold transition-colors ${location.pathname === ROUTES.MEMBER ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
