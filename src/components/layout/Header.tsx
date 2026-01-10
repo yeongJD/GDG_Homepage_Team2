@@ -41,7 +41,7 @@ const Header = () => {
   };
 
   return (
-    <header className={`h-[100px] ${isHomePage ? 'bg-transparent' : 'bg-white border-b border-grey-2'}`}>
+    <header className={`fixed top-0 left-0 right-0 h-[100px] z-50 ${isHomePage ? 'bg-transparent' : 'bg-white border-b border-grey-2'}`}>
       <nav className="w-full h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <Link to={ROUTES.HOME} className="flex items-center">
           <img src={gdgLogo} alt="GDG Logo" className="h-6 sm:h-7 md:h-8" />
@@ -49,17 +49,17 @@ const Header = () => {
         <div className="flex-1 flex justify-center">
           <ul className="flex gap-[95px]">
             <li>
-              <Link to={ROUTES.INTRO} className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors">
+              <Link to={ROUTES.INTRO} className={`text-body-bold transition-colors ${location.pathname === ROUTES.INTRO ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
                 소개
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.ACTIVITY} className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors">
+              <Link to={ROUTES.ACTIVITY} className={`text-body-bold transition-colors ${location.pathname === ROUTES.ACTIVITY ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
                 활동
               </Link>
             </li>
             <li>
-              <Link to={ROUTES.MEMBER} className="text-body-bold text-grey-7 hover:text-grey-10 transition-colors">
+              <Link to={ROUTES.MEMBER} className={`text-body-bold transition-colors ${location.pathname === ROUTES.MEMBER ? 'text-grey-10' : 'text-grey-7 hover:text-grey-10'}`}>
                 멤버
               </Link>
             </li>
