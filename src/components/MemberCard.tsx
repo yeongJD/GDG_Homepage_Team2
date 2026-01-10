@@ -34,7 +34,7 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
             className="w-[331px] h-[320px] rounded-[24px] relative overflow-hidden cursor-pointer group"
         >
             {/* ================= 앞면 (기본 화면) ================= */}
-            <div className={`w-[331px] h-[320px] bg-blue-b1 rounded-[24px] relative overflow-hidden group ${isMockup ? 'p-6' : ''}`}>
+            <div className={`w-[331px] h-[320px] bg-blue-b1 rounded-[24px] relative overflow-hidden group transition-opacity duration-[600ms] ${isMockup ? 'p-6' : ''} ${isFlipped ? 'opacity-0 invisible' : 'opacity-100 visible'}`}>
                 {isMockup ? (
                     // 5기 레이아웃
                     <>
@@ -110,7 +110,7 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
 
             {/* ================= 뒷면 (검은색 설명창) ================= */}
             <div
-                className={`absolute inset-0 rounded-[24px] flex flex-col transition-opacity duration-300 ${isFlipped ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                className={`absolute inset-0 rounded-[24px] flex flex-col transition-opacity duration-[600ms] ${isFlipped ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
                 style={{
                     background: 'linear-gradient(142deg, #020919 0%, #020919 60%, #0B1941 100%)'
                 }}
