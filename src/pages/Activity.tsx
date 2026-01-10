@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/animations';
 import { useState } from 'react';
+import SessionCard from '@/components/SessionCard';
 
 // -------------------------------------------------------
 // [1] 기수 토글 버튼 (분리된 파일로 만들었을 때 파일을 못찾는 이슈가 있어서 한 파일에 작성)
@@ -91,6 +92,14 @@ const Activity = () => {
       layout: "image-right",
     },
   ];
+
+  // 5th Session 카드에 들어갈 데이터 (나중에 DB에서 가져오겠지만 지금은 하드코딩)
+  const sessionList = [
+    { id: 1, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 2, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 3, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    { id: 4, title: 'Text', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut', image: "" },
+    ];
 
   return (
     <section className="w-full flex flex-col items-center py-[100px] bg-white">
@@ -193,9 +202,18 @@ const Activity = () => {
           </div>
         </motion.div>
         
-        {/* 그리드 카드 영역 */}
-        <div className="w-full h-[400px] bg-gray-100 rounded-[20px] flex items-center justify-center text-gray-400">
-          5th Session Content Coming Soon...
+        {/* 가로 스크롤 컨테이너 */}
+        <div className="flex gap-6 overflow-x-auto w-full pb-8 snap-x snap-mandatory">
+          {sessionList.map((session) => (    
+            <div key={session.id} className="min-w-[320px] snap-center">
+              <SessionCard 
+                key={session.id}
+                title={session.title}
+                desc={session.desc}
+                image={session.image}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
