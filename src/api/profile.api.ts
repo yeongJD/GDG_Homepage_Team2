@@ -3,9 +3,9 @@ import { ProfileGetResponse, ProfileUpdateRequest } from '@/types/profile.types'
 
 export const profileApi = {
   // 프로필 조회
-  getProfile: async (memberId: number): Promise<ProfileGetResponse> => {
+  getProfile: async (): Promise<ProfileGetResponse> => {
     const response = await apiClient.get<ProfileGetResponse>(
-      `/api/v1/me/profile/${memberId}`
+      '/api/v1/me/profile'
     );
     return response.data;
   },

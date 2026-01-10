@@ -1,4 +1,5 @@
 export type MemberRole = 'LEAD' | 'CORE' | 'DEVREL' | 'MEMBER';
+export type MemberPart = 'FRONTEND' | 'BACKEND' | 'APP' | 'DESIGN';
 
 export interface ProfileData {
   memberId: number;
@@ -9,6 +10,7 @@ export interface ProfileData {
   imageUrl: string;
   stacks: string[];
   memberRole: MemberRole;
+  part: MemberPart;
 }
 
 export interface ProfileUpdateRequest {
@@ -19,6 +21,7 @@ export interface ProfileUpdateRequest {
   imageUrl: string;
   stacks: string[];
   memberRole: MemberRole;
+  part: MemberPart;
 }
 
 export interface ProfileGetResponse {
@@ -29,4 +32,5 @@ export interface ProfileGetResponse {
   imageUrl: string;
   stacks: string[];
   memberRole: MemberRole;
+  part: MemberPart;
 }

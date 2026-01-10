@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, slideUp } from "@/utils/animations";
 import Avatar from "@/assets/profile.svg";
-import { MemberRole } from "@/types/profile.types";
+import { MemberRole, MemberPart } from "@/types/profile.types";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -11,6 +11,7 @@ type ProfileForm = {
   email: string;
   major: string;
   bio: string;
+  part: MemberPart;
   memberRole: MemberRole;
   stacks: [string, string, string];
   avatarUrl?: string;
@@ -20,10 +21,18 @@ type Touched = {
   name: boolean;
   major: boolean;
   bio: boolean;
+  part: boolean;
   memberRole: boolean;
 };
 
 const MAX_STACKS = 3;
+
+const partOptions = [
+  { label: '프론트엔드', value: 'FRONTEND' },
+  { label: '백엔드', value: 'BACKEND' },
+  { label: 'APP', value: 'APP' },
+  { label: '디자인', value: 'DESIGN' },
+];
 
 const roleOptions = [
   { label: 'Lead', value: 'LEAD' },
@@ -205,7 +214,7 @@ function SelectField({
 }
 
 export default function Profile() {
-  const { profile, loading, updateProfile } = useProfile();
+  const { profile, loading, error, updateProfile } = useProfile();
   const { user } = useAuth();
   
   const [form, setForm] = useState<ProfileForm>({
@@ -213,6 +222,7 @@ export default function Profile() {
     email: "",
     major: "",
     bio: "",
+    part: "FRONTEND",
     memberRole: "MEMBER",
     stacks: ["", "", ""],
     avatarUrl: undefined,
@@ -226,6 +236,7 @@ export default function Profile() {
         email: profile.email ?? "",
         major: profile.major ?? "",
         bio: profile.bio ?? "",
+        part: profile.part ?? "FRONTEND",
         memberRole: profile.memberRole ?? "MEMBER",
         stacks: [
           (profile.stacks && profile.stacks[0]) ?? "",
@@ -249,6 +260,7 @@ export default function Profile() {
     name: false,
     major: false,
     bio: false,
+    part: false,
     memberRole: false,
   });
 
@@ -260,12 +272,13 @@ export default function Profile() {
       name: form.name.trim().length === 0,
       major: form.major.trim().length === 0,
       bio: form.bio.trim().length === 0,
+      part: !form.part,
       memberRole: !form.memberRole,
     };
-  }, [form.name, form.major, form.bio, form.memberRole]);
+  }, [form.name, form.major, form.bio, form.part, form.memberRole]);
 
   const isValid = useMemo(() => {
-    return !errors.name && !errors.major && !errors.bio && !errors.memberRole;
+    return !errors.name && !errors.major && !errors.bio && !errors.part && !errors.memberRole;
   }, [errors]);
 
   // ✅ 빨간 테두리 노출 조건: (submit 한번 눌렀거나) (해당 필드가 touched)
@@ -273,6 +286,7 @@ export default function Profile() {
     if (key === "name") return errors.name && (submitAttempted || touched.name);
     if (key === "major") return errors.major && (submitAttempted || touched.major);
     if (key === "bio") return errors.bio && (submitAttempted || touched.bio);
+    if (key === "part") return errors.part && (submitAttempted || touched.part);
     if (key === "memberRole") return errors.memberRole && (submitAttempted || touched.memberRole);
     return false;
   };
@@ -322,6 +336,7 @@ export default function Profile() {
       bio: form.bio,
       imageUrl: form.avatarUrl || profile?.imageUrl || "",
       stacks: form.stacks.filter(s => s.trim().length > 0),
+      part: form.part,
       memberRole: form.memberRole,
     });
 
@@ -331,6 +346,15 @@ export default function Profile() {
       alert(`저장 실패: ${result.error}`);
     }
   };
+
+  if (error) {
+    return (
+      <div className="flex h-[50vh] w-full flex-col items-center justify-center gap-4">
+        <div className="text-xl font-semibold text-[#FF4D4F]">프로필을 불러올 수 없습니다.</div>
+        <div className="text-[#6D6D6D]">{error}</div>
+      </div>
+    );
+  }
 
   if (loading && !profile) {
     return <div className="flex h-[50vh] w-full items-center justify-center">Loading...</div>;
@@ -417,6 +441,19 @@ export default function Profile() {
                     onChange={(v) => setField("major", v)}
                     onClear={() => setField("major", "")}
                     onBlur={() => setTouched((t) => ({ ...t, major: true }))}
+                  />
+                </div>
+
+                {/* 파트 */}
+                <div className="flex flex-col gap-3">
+                  <FieldLabel required>파트</FieldLabel>
+                  <SelectField
+                    value={form.part}
+                    options={partOptions}
+                    placeholder="파트를 선택해주세요"
+                    invalid={showInvalid("part")}
+                    onChange={(v) => setField("part", v as MemberPart)}
+                    onBlur={() => setTouched((t) => ({ ...t, part: true }))}
                   />
                 </div>
 

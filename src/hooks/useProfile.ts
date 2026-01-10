@@ -16,7 +16,7 @@ export const useProfile = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await profileApi.getProfile(user.memberId);
+      const data = await profileApi.getProfile();
       setProfile({
         memberId: user.memberId,
         ...data,
