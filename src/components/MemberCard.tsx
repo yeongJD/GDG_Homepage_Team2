@@ -37,12 +37,17 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
         const links: { type: 'github' | 'velog' | 'instagram'; url: string; icon: string }[] = [];
 
         stacks.forEach(url => {
+            // URL에 프로토콜이 없으면 https:// 추가
+            const fullUrl = url.startsWith('http://') || url.startsWith('https://')
+                ? url
+                : `https://${url}`;
+
             if (url.includes('github.com')) {
-                links.push({ type: 'github', url, icon: iconGithub });
+                links.push({ type: 'github', url: fullUrl, icon: iconGithub });
             } else if (url.includes('velog.io')) {
-                links.push({ type: 'velog', url, icon: iconVelog });
+                links.push({ type: 'velog', url: fullUrl, icon: iconVelog });
             } else if (url.includes('instagram.com')) {
-                links.push({ type: 'instagram', url, icon: iconInstagram });
+                links.push({ type: 'instagram', url: fullUrl, icon: iconInstagram });
             }
         });
 
