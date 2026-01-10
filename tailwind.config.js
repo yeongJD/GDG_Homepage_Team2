@@ -36,40 +36,43 @@ export default {
         blue: {
           b0: '#DBE7FF',
           b1: '#F0F3F8',
-          b2: '#DCE1EB',
-          b3: '#6BA9DD',
+          b2: '#DCE2EB',
+          b3: '#8BA9DD',
           b4: '#A6DEFF',
           b5: '#4774FF',
-          b6: '#3DB7DC',
-          b7: '#0C24AD',
-          b8: '#0B7041',
-          b9: '#1B1D29',
-          b10: '#020919',
+          b6: '#3D67DC',
+          b7: '#0C244D',
+          b8: '#0B1941',
+          b9: '#181D29',
+          b10: '#020B19',
         },
 
         // Foundation Colors - Green
         green: {
           g1: '#DCFFC3',
           g2: '#3DDB4F',
-          g3: '#30B941',
+          g3: '#3DB94F',
         },
 
         // Foundation Colors - Yellow
         yellow: {
           y1: '#FFF4C2',
-          y3: '#F0D620',
+          y2: '#F0D620',
+          y3: '#9F8620',
         },
 
         // Foundation Colors - Red
         red: {
           r1: '#FFD7D7',
-          r3: '#FD6767',
+          r2: '#FD6767',
+          r3: '#F06767',
         },
 
         // Foundation Colors - Pink
         pink: {
           p1: '#FFD5E7',
-          p3: '#EE82B1',
+          p2: '#EE82B1',
+          p3: '#D85D91',
         },
 
         // Error Color
@@ -111,7 +114,7 @@ export default {
         'body-bold': ['20px', { lineHeight: '28px', fontWeight: '700' }],
 
         // caption
-        'caption-medium': ['16px', { lineHeight: '22px', fontWeight: '500' }],
+        'caption-medium': ['16px', { lineHeight: '24px', fontWeight: '500' }],
 
         // capion (typo in original)
         'capion-medium': ['14px', { lineHeight: '20px', fontWeight: '500' }],
