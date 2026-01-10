@@ -66,7 +66,7 @@ const Activity = () => {
     {
       id: 1,
       title: "정규 세션 중심의\n학습과 교류",
-      desc: "매주 정규 세션에서 각 파트의 지식을 공유하며 성장합니다.\n파트 간 교류를 통해 한 분야에 국한되지 않고, 다양한 기술과\n관점을 함께 배울 수 있습니다.",
+      desc: "매주 정규 세션에서 각 파트의 지식을 공유하며 성장합니다.\n파트 간 교류를 통해 한 분야에 국한되지 않고, 다양한 기술과 관점을 함께 배울 수 있습니다.",
       image: "src/assets/images/activity_session.png",
       layout: "image-left", 
     },
@@ -87,7 +87,7 @@ const Activity = () => {
     {
       id: 4,
       title: "GDG출신 선배들의\n실무 특강",
-      desc: "GDG 활동 이후 현업에서 활약 중인 선배들의 특강과 세미나를\n통해, 실무 현장의 이야기와 취업 준비에 도움이 되는 인사이트를 얻을 수 있습니다.",
+      desc: "GDG 활동 이후 현업에서 활약 중인 선배들의 특강과 세미나를 통해, 실무 현장의 이야기와 취업 준비에 도움이 되는 인사이트를 얻을 수 있습니다.",
       image: "src/assets/images/activity_lecture.png",
       layout: "image-right",
     },
@@ -118,17 +118,17 @@ const Activity = () => {
           transition={{ duration: 0.6 }}
           variants={slideUp}
         >
-          <h2 className="text-[50px] font-bold leading-[1.2] mb-6 text-black text-left">
+          <h2 className="text-[60px] font-bold leading-[1.2] mb-6 text-black text-left">
             What<br />We Do
           </h2>
-          <p className="text-[18px] text-gray-600 leading-relaxed max-w-[600px] text-left">
+          <p className="text-[22px] text-gray-600 leading-[1.5] max-w-[1041px] text-left">
             GDG SeoulTech는 매주 정규 세션을 통해 각자의 지식과 경험을 나눕니다.<br />
             또한 다른 GDG 소속 학교들과의 연합 행사, 해커톤을 통해 더 넓은 개발자 커뮤니티로 연결됩니다.
           </p>
         </motion.div>
 
         {/* 활동 카드 리스트 */}
-        <div className="flex flex-col gap-[40px]">
+        <div className="flex flex-col gap-[40px] max-w-[1041px]">
           {activities.map((activity, index) => (
             <motion.div
               key={activity.id}
@@ -147,8 +147,8 @@ const Activity = () => {
               `}
             >
               
-              {/* 1. 이미지 영역 (45%) */}
-              <div className="w-[45%] h-full relative overflow-hidden">
+              {/* 1. 이미지 영역 (41.3%) */}
+              <div className="w-[41.3%] h-full relative overflow-hidden">
                 <img 
                   src={activity.image} 
                   alt={activity.title} 
@@ -156,12 +156,12 @@ const Activity = () => {
                 />
               </div>
 
-              {/* 2. 텍스트 영역 (55%) */}
+              {/* 2. 텍스트 영역 (나머지) */}
               <div className="flex-1 p-10 flex flex-col justify-center">
-                <h3 className="text-[24px] font-bold mb-4 whitespace-pre-line text-left">
+                <h3 className="text-[30px] font-semibold mb-4 whitespace-pre-line text-left leading-[1.3]">
                   {activity.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-[16px] whitespace-pre-line text-left">
+                <p className="text-grey-8 leading-[1.5] text-[22px] whitespace-pre-line text-left">
                   {activity.desc}
                 </p>
               </div>
