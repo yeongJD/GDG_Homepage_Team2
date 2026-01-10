@@ -47,7 +47,7 @@ const Intro = () => {
 
   return (
     <div className="w-full">
-      <section className="relative flex flex-col items-center w-full min-h-screen mx-auto pt-[100px] pb-[200px] overflow-hidden">
+      <section className="relative flex flex-col items-center w-full min-h-screen mx-auto pt-[400px] pb-[200px] overflow-hidden">
         {/* 배경 이미지 */}
         <img 
           src="src\assets\home_background.png" 

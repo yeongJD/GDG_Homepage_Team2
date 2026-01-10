@@ -9,10 +9,12 @@ import profileImg from '@/assets/profile.svg';
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === ROUTES.HOME;
+  const isIntroOrActivityPage = location.pathname === ROUTES.INTRO;
 
   // '활동' 이동 로직
   const handleNavigation = (sectionId: string) => {
@@ -40,6 +42,18 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // 스크롤 감지
+  useEffect(() => {
+    if (!isIntroOrActivityPage) return;
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isIntroOrActivityPage]);
+
   const handleLogin = () => {
     googleAuthUtils.redirectToGoogle();
   };
@@ -56,7 +70,17 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 h-[100px] z-50 ${isHomePage ? 'bg-transparent' : 'bg-white border-b border-grey-2'}`}>
+    <header
+      className={`h-[100px] transition-all duration-300 ${
+        isIntroOrActivityPage
+          ? isScrolled
+            ? 'fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-grey-2'
+            : 'fixed top-0 left-0 right-0 z-50 bg-transparent'
+          : isHomePage
+            ? 'fixed top-0 left-0 right-0 z-50 bg-transparent'
+            : 'bg-white border-b border-grey-2'
+      }`}
+    >
       <nav className="w-full h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <Link to={ROUTES.HOME} className="flex items-center">
           <img src={gdgLogo} alt="GDG Logo" className="h-6 sm:h-7 md:h-8" />
