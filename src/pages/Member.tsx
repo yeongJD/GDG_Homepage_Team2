@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import MemberCard from '@/components/MemberCard';
 import { allGenerations, getMembersByRole } from '@/data';
-import { Member as MemberType } from '@/types/member.types';
+import { Member as MemberType, ApiMember } from '@/types/member.types';
+import { memberApi } from '@/api/member.api';
 
 // -------------------------------------------------------
 // [1] 기수 토글 버튼
@@ -57,17 +58,60 @@ function BatchToggle({ selectedGen, onSelect }: BatchToggleProps) {
 // [2] 전체 멤버 페이지 (메인)
 // -------------------------------------------------------
 
+const partMap: Record<string, string> = {
+  FRONTEND: '프론트엔드',
+  BACKEND: '백엔드',
+  APP: 'APP',
+  DESIGN: '디자인',
+};
+
 const Member = () => {
   const [generation, setGeneration] = useState('5기');
+  const [apiMembers, setApiMembers] = useState<MemberType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // 선택된 기수 번호
   const genNumber = useMemo(() => parseInt(generation.replace('기', '')), [generation]);
 
+  // 5기 멤버 데이터 Fetching
+  useEffect(() => {
+    if (genNumber === 5) {
+      const fetchMembers = async () => {
+        setLoading(true);
+        try {
+          const data = await memberApi.getGeneration5Members();
+          const mappedMembers: MemberType[] = data.map((m: ApiMember, idx: number) => ({
+            id: `gen5-${idx}`,
+            name: m.name,
+            author_name: m.name,
+            major: m.major,
+            role: m.memberRole.toLowerCase() as any,
+            email: '',
+            description: partMap[m.part] || m.part,
+            introduce: m.bio,
+            imageUrl: m.imageUrl,
+            blogs: {},
+          }));
+          setApiMembers(mappedMembers);
+        } catch (error) {
+          console.error('Failed to fetch members:', error);
+          setApiMembers([]); // 실패 시 빈 배열 혹은 기존 로컬 데이터 폴백 가능
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchMembers();
+    }
+  }, [genNumber]);
+
   // 선택된 기수의 멤버 데이터 가져오기
   const currentMembers = useMemo(() => {
+    if (genNumber === 5) {
+      return apiMembers;
+    }
     const genData = allGenerations.find(g => g.generation === genNumber);
     return genData?.members || [];
-  }, [genNumber]);
+  }, [genNumber, apiMembers]);
 
   // role별로 멤버 분류
   const leadMembers = useMemo(() => getMembersByRole(currentMembers, 'lead'), [currentMembers]);
@@ -91,53 +135,58 @@ const Member = () => {
 
       {/* 본문 컨텐츠 영역 */}
       <div className="pt-[480px] pb-20 flex flex-col gap-[160px]">
+        {loading && genNumber === 5 ? (
+          <div className="text-center text-xl text-gray-500">Loading members...</div>
+        ) : (
+          <>
+            {/* [SECTION 1] LEAD */}
+            {leadMembers.length > 0 && (
+              <section>
+                <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">LEAD</h2>
+                <div className="flex flex-wrap gap-6">
+                  {leadMembers.map((member: MemberType) => (
+                    <MemberCard key={member.id} member={member} generation={genNumber} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-        {/* [SECTION 1] LEAD */}
-        {leadMembers.length > 0 && (
-          <section>
-            <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">LEAD</h2>
-            <div className="flex flex-wrap gap-6">
-              {leadMembers.map((member: MemberType) => (
-                <MemberCard key={member.id} member={member} generation={genNumber} />
-              ))}
-            </div>
-          </section>
-        )}
+            {/* [SECTION 2] CORE */}
+            {coreMembers.length > 0 && (
+              <section>
+                <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">CORE</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {coreMembers.map((member: MemberType) => (
+                    <MemberCard key={member.id} member={member} generation={genNumber} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-        {/* [SECTION 2] CORE */}
-        {coreMembers.length > 0 && (
-          <section>
-            <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">CORE</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {coreMembers.map((member: MemberType) => (
-                <MemberCard key={member.id} member={member} generation={genNumber} />
-              ))}
-            </div>
-          </section>
-        )}
+            {/* [SECTION 3] DEVREL */}
+            {devrelMembers.length > 0 && (
+              <section>
+                <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">DEVREL</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {devrelMembers.map((member: MemberType) => (
+                    <MemberCard key={member.id} member={member} generation={genNumber} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-        {/* [SECTION 3] DEVREL */}
-        {devrelMembers.length > 0 && (
-          <section>
-            <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">DEVREL</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {devrelMembers.map((member: MemberType) => (
-                <MemberCard key={member.id} member={member} generation={genNumber} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* [SECTION 4] MEMBER */}
-        {members.length > 0 && (
-          <section>
-            <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">MEMBER</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {members.map((member: MemberType) => (
-                <MemberCard key={member.id} member={member} generation={genNumber} />
-              ))}
-            </div>
-          </section>
+            {/* [SECTION 4] MEMBER */}
+            {members.length > 0 && (
+              <section>
+                <h2 className="font-semibold text-[60px] leading-[72px] tracking-[0px] mb-6">MEMBER</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {members.map((member: MemberType) => (
+                    <MemberCard key={member.id} member={member} generation={genNumber} />
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
         )}
 
       </div>

@@ -16,10 +16,14 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
         setIsFlipped(!isFlipped);
     };
 
-    // 5기는 기본 프로필, 1~4기는 GitHub 프로필
-    const profileImageUrl = generation === 5 || !member.github
-        ? defaultProfile
-        : `https://github.com/${member.github}.png`;
+    // 이미지 URL 결정 로직
+    const getProfileImage = () => {
+        if (member.imageUrl) return member.imageUrl;
+        if (generation === 5) return defaultProfile;
+        return member.github ? `https://github.com/${member.github}.png` : defaultProfile;
+    };
+
+    const profileImageUrl = getProfileImage();
 
     // 5기 여부 확인
     const isMockup = generation === 5;
@@ -53,9 +57,9 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                     </div>
                 )}
 
-                {/* 아이콘 */}
+                {/* 아이콘: 5기(isMockup)일 때는 숨김 처리 (요구사항) */}
                 <div className="flex gap-3 mt-auto">
-                    {member.github && (
+                    {!isMockup && member.github && (
                         <a
                             href={`https://github.com/${member.github}`}
                             target="_blank"
@@ -65,9 +69,7 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                             <img src={iconGithub} alt="Github" className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100" />
                         </a>
                     )}
-                    {isMockup && (
-                        <img src={iconNotion} alt="Notion" className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100" />
-                    )}
+                    {/* Notion 아이콘도 5기일 때 숨김 */}
                 </div>
             </div>
 
@@ -86,8 +88,8 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                 <div className="mt-auto flex items-end justify-between border-t border-gray-700 pt-4">
                     {isMockup && (
                         <div>
-                            <span className="bg-[#2C2D35] text-blue-400 px-2 py-1 rounded text-xs mr-2">{member.author_name}</span>
-                            <span className="bg-[#2C2D35] text-blue-400 px-2 py-1 rounded text-xs mr-2">ITM</span>
+                            <span className="bg-[#2C2D35] text-blue-400 px-2 py-1 rounded text-xs mr-2">{member.name}</span>
+                            <span className="bg-[#2C2D35] text-blue-400 px-2 py-1 rounded text-xs mr-2">{member.major}</span>
                         </div>
                     )}
                 </div>

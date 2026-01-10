@@ -19,6 +19,18 @@ export interface Member {
   description: string;
   introduce: string;
   blogs?: MemberBlog;
+  imageUrl?: string; // API에서 받아온 이미지 URL
+  major?: string;    // 전공
+}
+
+export interface ApiMember {
+  name: string;
+  major: string;
+  bio: string; // introduce
+  imageUrl: string;
+  stacks: string[];
+  memberRole: 'LEAD' | 'CORE' | 'DEVREL' | 'MEMBER';
+  part: 'FRONTEND' | 'BACKEND' | 'APP' | 'DESIGN';
 }
 
 export interface GenerationData {
