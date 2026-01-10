@@ -41,7 +41,7 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                         {/* 상단 283*193 영역 (중앙 정렬, 상단 24px) */}
                         <div className="w-[283px] h-[193px] absolute top-6 left-1/2 -translate-x-1/2">
                             {/* 프로필 사진 (좌상단, 96*99) */}
-                            <div className="w-[96px] h-[99px] rounded-full overflow-hidden absolute top-0 left-0">
+                            <div className="w-[96px] h-[99px] rounded-[12px] overflow-hidden absolute top-0 left-0">
                                 <img
                                     src={profileImageUrl}
                                     alt={`${member.name} 프로필`}
@@ -72,7 +72,7 @@ const MemberCard = ({ member, generation }: MemberCardProps) => {
                         {/* 상단 283*193 영역 (중앙 정렬, 상단 24px) */}
                         <div className="w-[283px] h-[193px] absolute top-6 left-1/2 -translate-x-1/2">
                             {/* 프로필 사진 (좌상단, 96*99) */}
-                            <div className="w-[96px] h-[99px] rounded-full overflow-hidden absolute top-0 left-0">
+                            <div className="w-[96px] h-[99px] rounded-[12px] overflow-hidden absolute top-0 left-0">
                                 <img
                                     src={profileImageUrl}
                                     alt={`${member.name} 프로필`}

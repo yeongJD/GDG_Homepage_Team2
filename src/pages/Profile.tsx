@@ -390,6 +390,9 @@ export default function Profile() {
                     src={form.avatarUrl ?? Avatar}
                     alt="avatar"
                     className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = Avatar;
+                    }}
                   />
                 </div>
 
