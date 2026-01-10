@@ -184,12 +184,12 @@ const Activity = () => {
           variants={slideUp}
         >
 
-          <h2 className="text-[40px] font-bold mb-4 text-left">
+          <h2 className="text-[60px] font-semibold leading-[1.2] mb-4 text-left">
             {getSessionTitle(selectedGen)}<br/>
             Session
           </h2>
           
-          <p className="text-gray-500 mb-[28px] text-left">
+          <p className="text-[22px] font-medium leading-[1.5] tracking-[0] text-[#6D6D6D] mb-[28px] text-left">
             {selectedGen}의 주요 활동들을 확인해보세요
           </p>
 
@@ -202,21 +202,30 @@ const Activity = () => {
           </div>
         </motion.div>
         
-        {/* 가로 스크롤 컨테이너 */}
-        <div className="flex gap-6 overflow-x-auto w-full pb-8 snap-x snap-mandatory">
-          {sessionList.map((session) => (    
-            <div key={session.id} className="min-w-[320px] snap-center">
-              <SessionCard 
-                key={session.id}
-                title={session.title}
-                desc={session.desc}
-                image={session.image}
-              />
-            </div>
-          ))}
-        </div>
       </div>
-
+      {/* 가로 스크롤 컨테이너 */}
+      <div 
+        className="
+          w-full 
+          overflow-x-auto 
+          flex gap-6 
+          snap-x snap-mandatory 
+          pb-8 
+          mb-[368px]
+          pl-6 xl:pl-[calc((100vw-1000px)/2+24px)]
+        "
+      >
+        {sessionList.map((session) => (    
+          <div key={session.id} className="snap-center">
+            <SessionCard 
+              key={session.id}
+              title={session.title}
+              desc={session.desc}
+              image={session.image}
+            />
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
